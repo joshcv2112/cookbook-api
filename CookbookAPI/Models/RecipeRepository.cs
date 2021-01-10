@@ -52,6 +52,16 @@ namespace CookbookAPI.Models
             }
         }
 
+        public IEnumerable<Recipe> GetAllFromSection(int sectionId)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"SELECT * FROM Recipes WHERE SectionId=@SectionId";
+                dbConnection.Open();
+                return dbConnection.Query<Recipe>(sQuery, new { SectionId = sectionId });
+            }
+        }
+
         public void Delete(int id)
         {
             using (IDbConnection dbConnection = Connection)

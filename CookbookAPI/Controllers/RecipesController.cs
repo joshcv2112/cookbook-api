@@ -15,15 +15,21 @@ namespace CookbookAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Recipe> Get()
+        public IEnumerable<Recipe> GetAll()
         {
             return recipeRepository.GetAll();
         }
 
         [HttpGet("{id}")]
-        public Recipe Get(int id)
+        public Recipe GetById(int id)
         {
             return recipeRepository.GetById(id);
+        }
+
+        [HttpGet("section/{id}")]
+        public IEnumerable<Recipe> GetAllFromSection(int id)
+        {
+            return recipeRepository.GetAllFromSection(id);
         }
 
         [HttpPost]
