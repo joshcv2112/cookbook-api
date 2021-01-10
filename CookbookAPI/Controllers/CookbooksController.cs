@@ -24,30 +24,31 @@ namespace CookbookAPI.Controllers
             return cookbookRepository.GetAll();
         }
 
-        [HttpGet("{id}")]
-        public Cookbook Get(int id)
+        [HttpGet("{cookbookId}")]
+        public Cookbook Get(int cookbookId)
         {
-            return cookbookRepository.GetById(id);
+            return cookbookRepository.GetById(cookbookId);
         }
 
         [HttpPost]
-        public void Post([FromBody]Cookbook cookbook)
+        public void Post([FromBody] Cookbook cookbook)
         {
             if (ModelState.IsValid)
                 cookbookRepository.Add(cookbook);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Cookbook cookbook)
+        [HttpPut("{cookbookId}")]
+        public void Put(int cookbookId, [FromBody] Cookbook cookbook)
         {
+            cookbook.CookbookId = cookbookId;
             if (ModelState.IsValid)
                 cookbookRepository.Update(cookbook);
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{cookbookId}")]
+        public void Delete(int cookbookId)
         {
-            cookbookRepository.Delete(id);
+            cookbookRepository.Delete(cookbookId);
         }
     }
 }
