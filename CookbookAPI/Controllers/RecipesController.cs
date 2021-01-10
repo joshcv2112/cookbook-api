@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using CookbookAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookbookAPI.Controllers
@@ -19,26 +15,32 @@ namespace CookbookAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Recipe> Get()
+        public IEnumerable<Recipe> GetAll()
         {
             return recipeRepository.GetAll();
         }
 
         [HttpGet("{id}")]
-        public Recipe Get(int id)
+        public Recipe GetById(int id)
         {
             return recipeRepository.GetById(id);
         }
 
+        [HttpGet("section/{id}")]
+        public IEnumerable<Recipe> GetAllFromSection(int id)
+        {
+            return recipeRepository.GetAllFromSection(id);
+        }
+
         [HttpPost]
-        public void Post([FromBody]Recipe prod)
+        public void Post([FromBody] Recipe prod)
         {
             if (ModelState.IsValid)
                 recipeRepository.Add(prod);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Recipe prod)
+        public void Put(int id, [FromBody] Recipe prod)
         {
             prod.RecipeId = id;
             if (ModelState.IsValid)

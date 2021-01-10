@@ -1,10 +1,8 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CookbookAPI.Models
 {
@@ -51,6 +49,16 @@ namespace CookbookAPI.Models
                 string sQuery = @"SELECT * FROM Recipes WHERE Id=@Id";
                 dbConnection.Open();
                 return dbConnection.Query<Recipe>(sQuery, new { RecipeId = id }).FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<Recipe> GetAllFromSection(int sectionId)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                string sQuery = @"SELECT * FROM Recipes WHERE SectionId=@SectionId";
+                dbConnection.Open();
+                return dbConnection.Query<Recipe>(sQuery, new { SectionId = sectionId });
             }
         }
 

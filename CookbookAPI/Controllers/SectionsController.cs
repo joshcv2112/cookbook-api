@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using CookbookAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookbookAPI.Controllers
@@ -19,18 +15,22 @@ namespace CookbookAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Section> Get()
+        public IEnumerable<Section> GetAllSections()
         {
             return sectionRepository.GetAll();
         }
 
         [HttpGet("{sectionId}")]
-        public Section Get(int sectionId)
+        public Section GetSectionById(int sectionId)
         {
             return sectionRepository.GetById(sectionId);
         }
 
-        // Add endpoint to get sections by cookbookId instead of by sectionId
+        [HttpGet("cookbook/{cookbookId}")]
+        public IEnumerable<Section> GetSectionsByCookbook(int cookbookId)
+        {
+            return sectionRepository.GetByCookbookId(cookbookId);
+        }
 
         [HttpPost]
         public void Post([FromBody] Section prod)
