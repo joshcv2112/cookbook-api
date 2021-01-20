@@ -35,6 +35,7 @@ namespace CookbookAPI.Controllers
         [HttpPost]
         public void Post([FromBody] Recipe prod)
         {
+            // ADD VALIDATION TO VERIFY THAT SECTION BELONGS TO COOKBOOK....
             if (ModelState.IsValid)
                 recipeRepository.Add(prod);
         }
