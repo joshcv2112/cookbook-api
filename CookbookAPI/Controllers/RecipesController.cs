@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CookbookAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+//using System.Web.Http;
+using System.Net;
 
 namespace CookbookAPI.Controllers
 {
@@ -9,9 +13,11 @@ namespace CookbookAPI.Controllers
     public class RecipesController : ControllerBase
     {
         private readonly RecipeRepository recipeRepository;
+        private readonly SectionRepository sectionRepository;
         public RecipesController()
         {
             recipeRepository = new RecipeRepository();
+            sectionRepository = new SectionRepository();
         }
 
         [HttpGet]
@@ -33,18 +39,19 @@ namespace CookbookAPI.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Recipe prod)
+        public void Post([FromBody] Recipe rcp)
         {
+            ValidateCookbookSectionIds(rcp, sectionRepository.GetByCookbookId(rcp.CookbookId));
             if (ModelState.IsValid)
-                recipeRepository.Add(prod);
+                recipeRepository.Add(rcp);
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Recipe prod)
+        public void Put(int id, [FromBody] Recipe rcp)
         {
-            prod.RecipeId = id;
+            rcp.RecipeId = id;
             if (ModelState.IsValid)
-                recipeRepository.Update(prod);
+                recipeRepository.Update(rcp);
         }
 
         [HttpDelete]
@@ -52,6 +59,22 @@ namespace CookbookAPI.Controllers
         {
             recipeRepository.Delete(id);
             // Add call to delete all notes for a recipe.
+        }
+
+        private static void ValidateCookbookSectionIds(Recipe rcp, IEnumerable<Section> results)
+        {
+            bool found = false;
+            foreach (var result in results)
+            {
+                if (result.SectionId == rcp.SectionId)
+                {
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                throw new ArgumentException("Error: SectionId and CookbookId must be valid...");
+            }
         }
     }
 }
